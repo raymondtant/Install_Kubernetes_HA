@@ -1,0 +1,99 @@
+# Rocky Linux 8.x on virtualbox
+# All systems will require VMs built up like this.
+
+Start with a minimal install of Rocky Linux
+
+## Update the OS and install tools
+yum update -y
+yum install -y nano git wget nmap-ncat yum-utils route-tc
+
+#dnf install -y iproute-tc
+
+systemctl enable --now cockpit.socket
+
+## This is for VirtualBox
+yum install -y kernel-devel.x86_64
+yum groupinstall "Development tools"
+#Install VirtualBox Tools
+#Mount ISO
+ ./VBoxLinuxAdditions.run
+
+
+
+## disable firewall (optional, just open the right ports)
+systemctl disable --now firewalld.service
+
+## Disable SWAP
+# First diasbale swap
+sudo swapoff -a
+# And then to disable swap on startup in /etc/fstab
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+
+#selinux to DISABLED
+sed -i s/^SELINUX=.*$/SELINUX=disabled/ /etc/selinux/config
+
+
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+br_netfilter
+EOF
+
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+#apply changes
+sudo sysctl --system
+
+#reset machine-id and set hostname
+cat <<EOF | tee /root/reset-machine-id.sh
+#!/bin/bash
+hostnamectl set-hostname $1
+chmod 777 /etc/machine-id
+mv /etc/machine-id /etc/machine-id.origid
+systemd-machine-id-setup
+chmod 444 /etc/machine-id
+reboot
+EOF
+
+setup CRI-O
+#set new Repos
+
+curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_8/devel:kubic:libcontainers:stable.repo
+curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:1.24.repo https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/1.24/CentOS_8/devel:kubic:libcontainers:stable:cri-o:1.24.repo
+
+
+## CHECK the files created:
+###Should produce these files:
+#[root@master-1 yum.repos.d]# cat devel\:kubic\:libcontainers\:stable.repo
+#[devel_kubic_libcontainers_stable]
+#name=Stable Releases of Upstream github.com/containers packages (CentOS_8)
+#type=rpm-md
+#baseurl=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_8/
+#gpgcheck=1
+#gpgkey=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/CentOS_8/repodata/repomd.xml.key
+#enabled=1
+
+###
+#[root@master-1 yum.repos.d]# cat devel\:kubic\:libcontainers\:stable:cri-o:1.23.2.repo   
+#[devel_kubic_libcontainers_stable_cri-o_1.23_1.23.2]
+#name=devel:kubic:libcontainers:stable:cri-o:1.23:1.23.2 (CentOS_8) 
+#type=rpm-md
+#baseurl=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/1.23:/1.23.2/CentOS_8/
+#gpgcheck=1
+#gpgkey=https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/1.23:/1.23.2/CentOS_8/repodata/repomd.xml.key
+#enabled=1
+
+## Update the OS
+yum update -y
+
+yum install cri-o
+
+yum install cri-tools -y
+systemctl enable --now  crio
+
+
+
+

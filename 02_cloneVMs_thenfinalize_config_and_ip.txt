@@ -1,0 +1,78 @@
+# CLONE From BASE Machine
+.\VBoxManage.exe clonevm "Rocky85-CRIO_1" --mode=all --name="RKY-K8S-Master-1" --register
+.\VBoxManage.exe clonevm "Rocky85-CRIO_1" --mode=all --name="RKY-K8S-Master-2" --register
+.\VBoxManage.exe clonevm "Rocky85-CRIO_1" --mode=all --name="RKY-K8S-Master-3" --register
+.\VBoxManage.exe clonevm "Rocky85-CRIO_1" --mode=all --name="RKY-K8S-Worker-1" --register
+.\VBoxManage.exe clonevm "Rocky85-CRIO_1" --mode=all --name="RKY-K8S-Worker-2" --register
+.\VBoxManage.exe clonevm "Rocky85-CRIO_1" --mode=all --name="RKY-K8S-LB" --register
+
+# StartVM
+.\VBoxManage startvm "RKY-Master-1" 
+.\VBoxManage startvm "RKY-Master-2" 
+.\VBoxManage startvm "RKY-Master-3" 
+.\VBoxManage startvm "RKY-Worker-1" 
+.\VBoxManage startvm "RKY-Worker-2" 
+.\VBoxManage startvm "RKY-LB" 
+
+
+
+Also needed:
+
+A DNS Server OR EDIT HOST files on every machine.
+
+
+pick your addresses for the systems:
+
+I used a NAT'd network (NOT a hostonly network)
+
+Also adjust each server to have the assigned IP.
+
+export MASTER1_UUID=$(uuidgen -r)
+
+cat > /etc/sysconfig/network-scripts/ifcfg-enp0s3 <<EOF
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+NAME=enp0s3
+UUID=$MASTER1_UUID
+DEVICE=enp0s3
+ONBOOT=yes
+IPADDR=10.10.10.11
+PREFIX=24
+GATEWAY=10.10.10.1
+DNS1=[x.x.x.x]          <-----  your localDNS
+DOMAIN=[your-domain-if-any]   <----- your local domain
+EOF
+
+
+ bash reset-machine-id.sh [master-1]  <-- sets hostname and creates UUID for system
+
+
+
+## NO DNS Server?
+
+Typical Configuration: (add this to each server)
+
+10.10.10.11 master-1
+10.10.10.12 master-2
+10.10.10.13 master-3
+
+10.10.10.21 worker-1
+10.10.10.22 worker-2
+
+10.10.10.30 loadbalancer
+
+
+## From Master-1 share your SSH key (optional)
+ssh-keygen
+ssh-copy-id root@master-2
+
+
+

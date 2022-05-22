@@ -1,0 +1,87 @@
+## Set up the K8s repo
+ cat > /etc/yum.repos.d/kubernetes.repo <<EOF
+ [kubernetes]
+ name=Kubernetes
+ baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+ enabled=1
+ gpgcheck=1
+ repo_gpgcheck=1
+ gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+ exclude=kubelet kubeadm kubectl
+ EOF
+
+
+yum update -y
+
+yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+systemctl enable kubelet.service
+
+
+kubeadm config images pull
+
+kubeadm init --control-plane-endpoint "lb:6443" --pod-network-cidr=172.18.0.0/16 --upload-certs
+
+####  WAIT A FEW MINUTES TO LET IT SETTLE ######
+
+
+
+
+
+
+IF install if GOOD:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of the control-plane node running the following command on each as root:
+
+  kubeadm join lb:6443 --token 1xgwtw.rummj7mj2hifkbx8 \
+        --discovery-token-ca-cert-hash sha256:ab255e7a09934791142709507cffbf28eb757bc1a582b3aaf32039f54f540606 \
+        --control-plane --certificate-key 0bd4a5905d83ce3a4a2c25fe28d66f02624f28a1a6a36f0f81e26c6a1a202533
+
+Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
+As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
+"kubeadm init phase upload-certs --upload-certs" to reload certs afterward.
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join lb:6443 --token 1xgwtw.rummj7mj2hifkbx8 \
+        --discovery-token-ca-cert-hash sha256:ab255e7a09934791142709507cffbf28eb757bc1a582b3aaf32039f54f540606
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~        
+
+
+
+
+
+
+
+
+
+## set up admin configuration from a server or master-1
+~~~
+export KUBECONFIG=/etc/kubernetes/admin.conf
+
+OR
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+~~~
