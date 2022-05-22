@@ -1,6 +1,6 @@
 # A typical HA Kubernetes Environment contains these components:
 
-- 3 Masters (For Quarom)
+- 3 Masters (For Quorum)
 - 1 loadbalancer/haproxy (or haproxy with VRRP across Masters)
 - n number of workers
 
