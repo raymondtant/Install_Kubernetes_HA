@@ -5,7 +5,7 @@ Start with a minimal install of Rocky Linux
 
 ## Update the OS and install tools
 yum update -y
-yum install -y nano git wget nmap-ncat yum-utils route-tc
+yum install -y nano git wget nmap-ncat yum-utils route-tc iotop
 
 #dnf install -y iproute-tc
 
