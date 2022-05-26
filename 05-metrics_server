@@ -1,6 +1,0 @@
-wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
-add the following to the deployment command section:
-- --kubelet-insecure-tls
-
-kubectl apply -f components.yaml

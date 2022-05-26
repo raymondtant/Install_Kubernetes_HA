@@ -1,0 +1,33 @@
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+add the following to the deployment command section:
+- --kubelet-insecure-tls
+
+## WORKAROUND
+#https://github.com/kubernetes-sigs/metrics-server/issues/196
+# certificates do not have SAN IP's - need to figureout how to adjust them
+# kublet-insecure-tls is a workaround.
+
+
+kubectl apply -f components.yaml
+
+
+###TESTING
+
+[root@master-1 ~]# kubectl top node
+NAME       CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+master-1   78m          3%     1469Mi          54%
+master-2   56m          2%     1377Mi          50%
+worker-1   34m          1%     1861Mi          68%
+[root@master-1 ~]# kubectl top pod
+NAME                                           CPU(cores)   MEMORY(bytes)
+api-gateway-56b7f48dbc-dfjzp                   1m           159Mi
+hello-world-5766f5888c-jq255                   0m           11Mi
+hello-world-5766f5888c-mdpzr                   0m           10Mi
+position-simulator-6b6544785f-kljlv            1m           144Mi
+position-tracker-5857b86f6f-tl4pj              2m           209Mi
+staff-service-7984bc8f79-th7tv                 1m           159Mi
+staff-service-risky-version-689c88f99d-6qcw2   1m           157Mi
+vehicle-telemetry-76449f79b8-vrqbz             1m           166Mi
+webapp-5d97cf68cd-lwr2z                        0m           3Mi
+webapp-experimental-cd5bd5c58-sdtwn            0m           3Mi

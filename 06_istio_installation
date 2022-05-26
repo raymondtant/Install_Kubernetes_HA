@@ -1,0 +1,52 @@
+curl -L https://istio.io/downloadIstio | sh -
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Istio 1.13.4 Download Complete!
+
+Istio has been successfully downloaded into the istio-1.13.4 folder on your system.
+
+Next Steps:
+See https://istio.io/latest/docs/setup/install/ to add Istio to your Kubernetes cluster.
+
+To configure the istioctl client tool for your workstation,
+add the /root/istio-1.13.4/bin directory to your environment path variable with:
+         export PATH="$PATH:/root/istio-1.13.4/bin"
+
+Begin the Istio pre-installation check by running:
+         istioctl x precheck
+
+Need more information? Visit https://istio.io/latest/docs/setup/install/
+~~~~~~~~~~~~~~~~~
+#Run precheck
+istioctl x precheck
+✔ No issues found when checking the cluster. Istio is safe to install or upgrade!
+  To get started, check out https://istio.io/latest/docs/setup/getting-started/
+
+
+cd istio-1.13.4
+
+which profile: https://istio.io/latest/docs/setup/additional-setup/config-profiles/
+
+istioctl install --set profile=demo -y
+
+kubectl get namespace -L istio-injection
+
+kubectl label namespace istio-system istio-injection=disabled --overwrite
+
+kubectl label namespace default istio-injection=enabled --overwrite
+
+https://istio.io/latest/docs/ops/common-problems/injection/
+
+.\VBoxManage.exe snapshot "RKY-Master-1" take "GOOD_WITH_ISTIO_1" --live --description "After Istio CNI=true"
+.\VBoxManage.exe snapshot "RKY-Master-2" take "GOOD_WITH_ISTIO_1" --live --description "After Istio CNI=true"
+.\VBoxManage.exe snapshot "RKY-Worker-1" take "GOOD_WITH_ISTIO_1" --live --description "After Istio CNI=true"
+.\VBoxManage.exe snapshot "RKY-Worker-2" take "GOOD_WITH_ISTIO" --live --description "After Istio CNI=true"
+.\VBoxManage.exe snapshot "RKY-LB" take "GOOD_WITH_ISTIO" --live --description "After Istio CNI=true"
+
+
+istioctl install --set components.cni.enabled=true
+
+ kubectl port-forward istio-ingressgateway-xxxx-yyyy 15000
+ 
+https://stackoverflow.com/questions/60484080/the-external-ip-of-istio-ingress-gateway-stay-pending
+https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/#determining-the-ingress-ip-and-ports

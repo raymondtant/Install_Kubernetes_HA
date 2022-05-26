@@ -1,19 +1,17 @@
 ## Set up the K8s repo
- cat > /etc/yum.repos.d/kubernetes.repo <<EOF
- [kubernetes]
- name=Kubernetes
- baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
- enabled=1
- gpgcheck=1
- repo_gpgcheck=1
- gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
- exclude=kubelet kubeadm kubectl
- EOF
+cat > /etc/yum.repos.d/kubernetes.repo <<EOF
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+exclude=kubelet kubeadm kubectl
+EOF
 
 
-yum update -y
-
-yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+yum update -y; yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
 systemctl enable kubelet.service
 
@@ -25,7 +23,7 @@ kubeadm init --control-plane-endpoint "lb:6443" --pod-network-cidr=172.18.0.0/16
 ####  WAIT A FEW MINUTES TO LET IT SETTLE ######
 
 
-
+kubectl get componentstatuses --kubeconfig admin.kubeconfig
 
 
 
@@ -68,7 +66,7 @@ kubeadm join lb:6443 --token 1xgwtw.rummj7mj2hifkbx8 \
 
 
 
-
+kubeadm join lb:6443 --token z8629v.1umbvgbqn0v17io9 --discovery-token-ca-cert-hash sha256:6eb0ac059116437b665d1e3e35ee40961cc3d3045706e8674832cbb1e6678f1f
 
 
 
@@ -85,3 +83,7 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ~~~
+
+
+
+Warning  FailedCreatePodSandBox  2m33s  kubelet            Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-6d4b75cb6d-hftzk_kube-system_5b322892-aece-4738-a381-a027410ea5d5_0(8ec420353dd3e7e8ea8697a544a1d96915538d2fad1137804002308292a866ba): error adding pod kube-system_coredns-6d4b75cb6d-hftzk to CNI network "cbr0": plugin type="flannel" failed (add): failed to delegate add: failed to set bridge addr: "cni0" already has an IP address different from 10.244.0.1/24
