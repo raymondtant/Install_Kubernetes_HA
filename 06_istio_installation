@@ -37,16 +37,16 @@ kubectl label namespace default istio-injection=enabled --overwrite
 
 https://istio.io/latest/docs/ops/common-problems/injection/
 
-.\VBoxManage.exe snapshot "RKY-Master-1" take "GOOD_WITH_ISTIO_1" --live --description "After Istio CNI=true"
-.\VBoxManage.exe snapshot "RKY-Master-2" take "GOOD_WITH_ISTIO_1" --live --description "After Istio CNI=true"
-.\VBoxManage.exe snapshot "RKY-Worker-1" take "GOOD_WITH_ISTIO_1" --live --description "After Istio CNI=true"
-.\VBoxManage.exe snapshot "RKY-Worker-2" take "GOOD_WITH_ISTIO" --live --description "After Istio CNI=true"
-.\VBoxManage.exe snapshot "RKY-LB" take "GOOD_WITH_ISTIO" --live --description "After Istio CNI=true"
+.\VBoxManage.exe snapshot "RKY-Master-1" take "GOOD_WITH_MetalLB" --live --description "MLB installed and configed wioth a range 10.10.10.40-50"
+.\VBoxManage.exe snapshot "RKY-Master-2" take "GOOD_WITH_MetalLB" --live --description "MLB installed and configed wioth a range 10.10.10.40-50"
+.\VBoxManage.exe snapshot "RKY-Worker-1" take "GOOD_WITH_MetalLB" --live --description "MLB installed and configed wioth a range 10.10.10.40-50"
+.\VBoxManage.exe snapshot "RKY-Worker-2" take "GOOD_WITH_MetalLB" --live --description "MLB installed and configed wioth a range 10.10.10.40-50"
+.\VBoxManage.exe snapshot "RKY-LB" take "GOOD_WITH_MetalLB" --live --description "MLB installed and configed wioth a range 10.10.10.40-50"
 
 
 istioctl install --set components.cni.enabled=true
 
  kubectl port-forward istio-ingressgateway-xxxx-yyyy 15000
- 
+
 https://stackoverflow.com/questions/60484080/the-external-ip-of-istio-ingress-gateway-stay-pending
 https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/#determining-the-ingress-ip-and-ports

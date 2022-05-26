@@ -1,0 +1,24 @@
+ kubectl edit configmap -n kube-system kube-proxy
+   set StrictARP: true
+
+configmap/kube-proxy edited
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
+
+
+#CONFIGURE
+add config map for a pool of IPs to use 
+then set type: LoadBalancer on SVCs
+get assigned an IP and PORT 
+
+apiVersion: v1
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 10.10.10.40-10.10.10.50
+kind: ConfigMap
+
