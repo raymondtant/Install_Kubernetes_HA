@@ -14,6 +14,12 @@
 .\VBoxManage startvm "RKY-Worker-2" 
 .\VBoxManage startvm "RKY-LB" 
 
+.\VBoxManage controlvm "RKY-Master-1" acpipowerbutton
+.\VBoxManage controlvm "RKY-Master-2" acpipowerbutton  
+.\VBoxManage controlvm "RKY-Master-3" acpipowerbutton 
+.\VBoxManage controlvm "RKY-Worker-1" acpipowerbutton  
+.\VBoxManage controlvm "RKY-Worker-2" acpipowerbutton  
+.\VBoxManage controlvm "RKY-LB" acpipowerbutton 
 
 
 Also needed:
