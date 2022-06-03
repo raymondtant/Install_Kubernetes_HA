@@ -7,12 +7,15 @@
 .\VBoxManage.exe clonevm "Rocky85-CRIO_1" --mode=all --name="RKY-K8S-LB" --register
 
 # StartVM
+cd "Program Files\Oracle\VirtualBox"
+.\VBoxManage startvm "RKY-LB" 
 .\VBoxManage startvm "RKY-Master-1" 
 .\VBoxManage startvm "RKY-Master-2" 
 .\VBoxManage startvm "RKY-Master-3" 
 .\VBoxManage startvm "RKY-Worker-1" 
 .\VBoxManage startvm "RKY-Worker-2" 
-.\VBoxManage startvm "RKY-LB" 
+
+
 
 .\VBoxManage controlvm "RKY-Master-1" acpipowerbutton
 .\VBoxManage controlvm "RKY-Master-2" acpipowerbutton  
@@ -20,7 +23,6 @@
 .\VBoxManage controlvm "RKY-Worker-1" acpipowerbutton  
 .\VBoxManage controlvm "RKY-Worker-2" acpipowerbutton  
 .\VBoxManage controlvm "RKY-LB" acpipowerbutton 
-
 
 Also needed:
 
