@@ -49,4 +49,4 @@ istioctl install --set components.cni.enabled=true
  kubectl port-forward istio-ingressgateway-xxxx-yyyy 15000
 
 https://stackoverflow.com/questions/60484080/the-external-ip-of-istio-ingress-gateway-stay-pending
-https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/#determining-the-ingress-ip-and-ports
+https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-control/#determining-the-ingress-ip-and-ports 

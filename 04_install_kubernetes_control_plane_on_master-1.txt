@@ -65,6 +65,9 @@ kubeadm join lb:6443 --token 1xgwtw.rummj7mj2hifkbx8 \
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~        
 
 
+#To reprint the token
+kubeadm token create --print-join-command
+
 
 kubeadm join lb:6443 --token z8629v.1umbvgbqn0v17io9 --discovery-token-ca-cert-hash sha256:6eb0ac059116437b665d1e3e35ee40961cc3d3045706e8674832cbb1e6678f1f
 
@@ -87,3 +90,10 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
 Warning  FailedCreatePodSandBox  2m33s  kubelet            Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-6d4b75cb6d-hftzk_kube-system_5b322892-aece-4738-a381-a027410ea5d5_0(8ec420353dd3e7e8ea8697a544a1d96915538d2fad1137804002308292a866ba): error adding pod kube-system_coredns-6d4b75cb6d-hftzk to CNI network "cbr0": plugin type="flannel" failed (add): failed to delegate add: failed to set bridge addr: "cni0" already has an IP address different from 10.244.0.1/24
+
+
+
+----
+
+https://cloudblue.freshdesk.com/support/solutions/articles/44001886522-how-to-fix-failed-to-get-system-container-stats-on-k8s-service-node-
+

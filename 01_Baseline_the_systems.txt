@@ -3,9 +3,14 @@
 
 Start with a minimal install of Rocky Linux
 
+
+
 ## Update the OS and install tools
 yum update -y
-yum install -y nano git wget nmap-ncat yum-utils route-tc iotop
+yum install -y nano git wget nmap-ncat yum-utils iproute-tc iotop chronyd
+
+#Make sure time is synced
+systemctl enable --now chronyd
 
 #dnf install -y iproute-tc
 
@@ -37,7 +42,7 @@ cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 br_netfilter
 EOF
 
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+cat <<EOF | tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
@@ -89,7 +94,7 @@ curl -L -o /etc/yum.repos.d/devel:kubic:libcontainers:stable:cri-o:1.24.repo htt
 ## Update the OS
 yum update -y
 
-yum install cri-o
+yum install cri-o -y
 
 yum install cri-tools -y
 systemctl enable --now  crio

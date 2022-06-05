@@ -1,0 +1,11 @@
+#Pay attention to ETCD:[version tag]
+#pay attention to endpoint 
+#Can be docker or podman
+
+podman run --rm -it \
+--net host \
+-v /etc/kubernetes:/etc/kubernetes k8s.gcr.io/etcd:3.5.3-0 etcdctl \
+--cert /etc/kubernetes/pki/etcd/peer.crt \
+--key /etc/kubernetes/pki/etcd/peer.key \
+--cacert /etc/kubernetes/pki/etcd/ca.crt \
+--endpoints https://localhost:2379 endpoint health --cluster
