@@ -68,10 +68,11 @@ kubeadm join lb:6443 --token 1xgwtw.rummj7mj2hifkbx8 \
 #To reprint the token
 kubeadm token create --print-join-command
 
+kubeadm init phase upload-certs --upload-certs
 
 kubeadm join lb:6443 --token z8629v.1umbvgbqn0v17io9 --discovery-token-ca-cert-hash sha256:6eb0ac059116437b665d1e3e35ee40961cc3d3045706e8674832cbb1e6678f1f
 
-
+kubeadm join klb1.bulldiamond.net:6443 --token 1fy4vl.rik5s7j45m2v79dj --discovery-token-ca-cert-hash sha256:f2082842f9e663c26276704a85a8f389b09f97f02ef1f632086dfcf0bac5fa71  --control-plane --certificate-key 02cf32e7381341ec340f66eccffad3211a03de853936bd58d21b5a12f1659ea7
 
 
 

@@ -1,0 +1,38 @@
+758  git clone https://github.com/nginxinc/kubernetes-ingress.git --branch v2.2.2
+  759  ls
+  760  kubectl delete -f nginx-ingress-deploy.yaml
+  761  cd kubernetes-ingress/
+  762  ls
+  763  ls -l
+  764  kubectl apply -f common/ns-and-sa.yaml
+  765  cd deployments/
+  766  ls
+  767  kubectl apply -f common/ns-and-sa.yaml
+  768  kubectl apply -f rbac/rbac.yaml
+  769  kubectl apply -f rbac/ap-rbac.yaml
+  770  cat  rbac/ap-rbac.yaml
+  771  cat  rbac/apdos-rbac.yaml
+  772  kubectl apply -f common/default-server-secret.yaml
+  773  kubectl apply -f common/nginx-config.yaml
+  774  nano common/ingress-class.yaml
+  775  kubectl apply -f common/ingress-class.yaml
+  776  nano common/ingress-class.yaml
+  777  kubectl apply -f common/ingress-class.yaml
+  778  nano common/ingress-class.yaml
+  779  kubectl apply -f common/ingress-class.yaml
+  780  kubectl apply -f common/crds/k8s.nginx.org_virtualservers.yaml
+  781  kubectl apply -f common/crds/k8s.nginx.org_virtualserverroutes.yaml
+  782  kubectl apply -f common/crds/k8s.nginx.org_transportservers.yaml
+  783  kubectl apply -f common/crds/k8s.nginx.org_policies.yaml
+  784  kubectl apply -f common/crds/k8s.nginx.org_globalconfigurations.yaml
+  785  kubectl apply -f deployment/nginx-ingress.yaml
+  786  kubectl apply -f daemon-set/nginx-ingress.yaml
+  787  kubectl get pods --namespace=nginx-ingress
+  788  netstat -ant | grep 80
+  789  ss -nat | grep 443
+  790  kubectl get svc -A
+  791  curl -v -k knode1
+  792  curl -v -k knode2
+  793  curl -v -k kmaster2
+  794  curl -v -k https://knode1
+  795  history
