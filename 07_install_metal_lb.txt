@@ -1,10 +1,16 @@
- kubectl edit configmap -n kube-system kube-proxy
-   set StrictARP: true
 
+#might not be needed -------------------------------
+kubectl edit configmap -n kube-system kube-proxy
+   set StrictARP: true
 configmap/kube-proxy edited
+#----------------------------------------------------
+
 
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/namespace.yaml
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.12.1/manifests/metallb.yaml
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+  nano metallb_config_map.yaml
+  kubectl apply -f metallb_config_map.yaml
 
 
 #CONFIGURE
